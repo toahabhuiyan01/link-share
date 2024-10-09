@@ -1,3 +1,7 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "@toaha/eslint-config",
+    "next/core-web-vitals",
+    "next/typescript"
+  ]
 }
