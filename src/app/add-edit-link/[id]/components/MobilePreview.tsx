@@ -7,7 +7,7 @@ import { platformTheme } from '../constants'
 import { getContrastTextColor } from '../utils'
 
 import useLinkStore from '@/app/store/LinkStore'
-import MobileMockup from '../../../../assets/images/Mobile.png'
+import MobileMockup from '@/assets/images/Mobile.png'
 import UserImage from '@/assets/images/user-avatar.png'
 
 type PlatformType = keyof typeof platformTheme

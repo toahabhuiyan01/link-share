@@ -1,10 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
 import localFont from 'next/font/local'
 import './globals.css'
 import './styles.css'
-import useDimensionStore from './store/DimensionStore'
+import dynamic from 'next/dynamic'
 
 
 const geistSans = localFont({
@@ -18,16 +17,19 @@ const geistMono = localFont({
 	weight: '100 900',
 })
 
+const DynamicComponentWithNoSSR = dynamic(
+  () =>  import('./ImportDimensionHelper'),
+  { ssr: false }
+)
+
 export default function RootLayout({
 	children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-	const { subscribe } = useDimensionStore()
-	useEffect(subscribe, [])
-
 	return (
 		<html lang='en'>
+			<DynamicComponentWithNoSSR />
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-50`}
 			>

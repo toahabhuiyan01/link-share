@@ -1,7 +1,7 @@
 {
   "extends": [
-    "next/core-web-vitals",
-    "next/typescript"
+    "next/typescript",
+    "next/core-web-vitals"
   ],
   "rules": {
     "@typescript-eslint/no-empty-object-type": "off"

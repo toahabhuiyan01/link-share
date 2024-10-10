@@ -1,3 +1,5 @@
+"use client"
+
 import Facebook from '@/assets/images/facebook.svg'
 import GitHub from '@/assets/images/github.svg'
 import Instagram from '@/assets/images/insta.svg'
