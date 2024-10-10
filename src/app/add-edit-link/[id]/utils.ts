@@ -2,6 +2,7 @@ export function getContrastTextColor(backgroundColor: string) {
 	// Convert hex color to RGB
 	const hexToRgb = (hex: string) => {
 		const bigint = parseInt(hex.replace('#', ''), 16)
+
 		return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255]
 	}
 
