@@ -1,6 +1,12 @@
+'use client'
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "./styles.css";
+import { useEffect } from "react";
+import useDimensionStore from "./store/DimensionStore";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,10 +29,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { subscribe } = useDimensionStore()
+  useEffect(subscribe, [])
+
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-50`}
       >
         {children}
       </body>

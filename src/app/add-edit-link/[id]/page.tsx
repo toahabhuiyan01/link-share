@@ -19,7 +19,10 @@ export default function Page() {
         >
             <TopBar />
             <div
-                className='flex flex-row gap-4'
+                className='flex flex-row justify-between'
+                style={{
+                    height: 'calc(100vh - 120px)'
+                }}
             >
                 <MobilePreview />
                 {

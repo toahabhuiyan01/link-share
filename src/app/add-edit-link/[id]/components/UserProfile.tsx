@@ -1,11 +1,23 @@
 import { IUser } from "@/app/types";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import UserDefaultImage from '@/assets/images/user-avatar.png'
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
-import Image from "next/image";
+import { ImageUp } from "lucide-react";
+import NextImage from "next/image";
 import * as Yup from 'yup'
+import { Button } from "@/components/ui/button";
 
 type UserData = Pick<IUser, 'email' | 'avatar' | 'firstName' | 'lastName'>
+type KeysUserData = keyof UserData
+const fieldMap = {
+    firstName: 'First Name *',
+    lastName: 'Last Name *',
+    email: 'Email',
+}
+
+
 
 export default function UserProfile() {
     const formData = useFormik<UserData>({
@@ -20,7 +32,7 @@ export default function UserProfile() {
         },
         validateOnBlur: true,
         validationSchema: Yup.object().shape({
-            email: Yup.string().trim().required('Email is required').email('This need to be a valid email'),
+            email: Yup.string().trim().email('This need to be a valid email'),
             avatar: Yup.string().trim().required('Profile Picture is required'),
             firstName: Yup.string().trim().required('First Name is required'),
             lastName: Yup.string().trim().required('Last Name is required')
@@ -31,104 +43,165 @@ export default function UserProfile() {
 
     return (
         <div
-            className='flex flex-col gap-4 p-4 bg-white rounded-lg'
+            className='flex flex-col gap-4 bg-white rounded-lg'
             style={{
-                width: '60%'
+                width: 'calc(60% - .5rem)'
             }}
         >
-            <div>
-                <h1>Profile Details</h1>
-                <p>
-                    Add your details to create a personal touch to your profile
-                </p>
-            </div>
-            <div
-                className="flex flex-row justify-between items-center bg-stone-50 p-4 rounded-lg"
+            <div 
+                className="flex flex-col gap-8 p-8"
+                style={{
+                    height: 'calc(100% - 6.25rem)'
+                }}
             >
-                <Label>
-                    Profile Picture
-                </Label>
-                <div style={{width: '100px'}}>
-                    <AspectRatio
-                        ratio={1/1}
+                <div className='flex flex-col gap-1'>
+                    <p className='text-3xl font-extrabold'>Profile Details</p>
+                    <p className='text-sm font-medium text-gray-600'>Add your details to create a personal touch to your profile</p>
+                </div>
+
+                <div
+                    className="flex flex-col gap-4 justify-between items-center bg-stone-50 p-4 rounded-lg"
+                >
+                    <p className="text-sm font-medium text-gray-500">
+                        Profile Picture
+                    </p>
+                    <div 
+                        id="image-container" 
+                        style={{
+                            width: '200px',
+                            height: '200px',
+                            position: 'relative' 
+                        }}
                     >
-                        <Image
-                            id="profile-picture"
-                            src="https://www.simplilearn.com/image-processing-article"
-                            alt="Profile Picture"
-                            width={100}
-                            height={100}
+                        <AspectRatio
+                            ratio={1/1}
+                            className="flex items-center justify-center"
+                        >
+                            <NextImage
+                                id="profile-picture"
+                                className="rounded-lg image-subject"
+                                src={userValues.avatar || UserDefaultImage}
+                                alt="Profile Picture"
+                                width={200}
+                                height={200}
+                                style={{
+                                    maxHeight: '200px',
+                                    maxWidth: '200px'
+                                }}
+                            />
+                            
+                            <input
+                                id='file-input'
+                                name='avatar'
+                                type="file"
+                                className="hidden"
+                                onChange={
+                                    event => {
+                                        const file = event.target.files![0]
+                                        if(!file) return
+                                        const urlData = URL.createObjectURL(file)
+                                        try {
+                                            const reader = new FileReader()
+
+                                            reader.onload = (e) => {
+                                                const img = new Image()
+                                                img.src = urlData
+
+                                                img.onload = () => {
+                                                    if(img.width > 1024 || img.height > 1024) {
+                                                        formData.setFieldError('avatar', 'Image must be below 1024x1024')
+                                                        return
+                                                    }
+
+                                                    formData.setFieldValue('avatar', e.target!.result as string)
+                                                    formData.handleBlur(event)
+                                                }
+                                            }
+                                            reader.readAsDataURL(file)
+                                        } catch(e) {
+
+                                        }
+                                    }
+                                }
+                                accept=".jpg, .png, .bmp" 
+                            />
+                        </AspectRatio>
+                        <div
+                            id="image-overlay"
+                            className="hover:bg-blend-darken hidden absolute curosr-pointer flex flex-col items-center justify-center gap-2 bg-transparent rounded-lg p-4"
+                            style={{
+                                top: 0,
+                                left: 0,
+                                height: '100%',
+                                width: '100%'
+                            }}
                             onClick={
                                 () => {
                                     const element = document.getElementById('file-input')
                                     element!.click()
                                 }
                             }
-                        />
-                        
-                        <input
-                            id='file-input'
-                            type="file"
-                            className="hidden"
-                            accept=".jpg, .png, .bmp" 
-                        />
-                    </AspectRatio>
+                        >
+                            <ImageUp />
+                            <p className="text-sm text-center text-nowrap font-semibold">{ userValues.avatar ? "Change Image" : "Upload Image"}</p>
+                        </div>
+                        {
+                            formData.touched.avatar && formData.errors.avatar ? (
+                                <p>{formData.errors.avatar}</p>
+                            ) : null
+                        }
+                    </div>
+                    <div className="flex flex-col">
+                        <p className="text-xs font-medium text-gray-500">
+                            Image must be below 1024x1024.
+                        </p>
+                        <p className="text-xs font-medium text-gray-500">
+                            User PNG,JPG, or BMP format
+                        </p>
+                    </div>
                 </div>
-                <div className="flex flex-col">
-                    <p>Image must be below 1024x1024.</p>
-                    <p>User PNG,JPG, or BMP format</p>
+
+                <div className="flex flex-col gap-2 bg-stone-50 p-4 rounded-lg">
+                    {
+                        Object.keys(fieldMap).map((key) => {
+                            const field = key as KeysUserData
+
+                            return (
+                                <div className="flex flex-col">
+                                    <div className="flex flex-row items-center justify-between">
+                                        <Label className="text-nowrap text-sm text-gray-500 font-semibold">
+                                            {fieldMap[key as keyof typeof fieldMap]}
+                                        </Label>
+                                        <Input
+                                            type="text"
+                                            name={field}
+                                            className="w-full border-solid border-2 h-10 p-2 w-96 rounded-lg"
+                                            value={userValues.firstName}
+                                            onBlur={formData.handleBlur}
+                                            onChange={(e) => formData.setFieldValue(field, e.target.value)}
+                                        />
+                                    </div>
+                                    {
+                                        formData.touched[field] && formData.errors[field] ? (
+                                            <p className="text-xs text-rose-700">{formData.errors[field]}</p>
+                                        ) : null
+                                    }
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
-
-            <div className="flex flex-col gap-2 bg-stone-50 p-4 rounded-lg">
-                <div className="flex flex-row items-center justify-between">
-                    <Label className="text-nowrap">
-                        First Name
-                    </Label>
-                    <input
-                        type="text"
-                        className="w-full border-solid border-2 h-10 p-2 w-80 rounded-lg"
-                        value={userValues.firstName}
-                        onChange={(e) => formData.setFieldValue('firstName', e.target.value)}
-                    />
-                    {
-                        formData.touched.firstName && formData.errors.firstName ? (
-                            <p>{formData.errors.firstName}</p>
-                        ) : null
-                    }
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                    <Label className="text-nowrap">
-                        Last Name
-                    </Label>
-                    <input
-                        type="text"
-                        value={userValues.lastName}
-                        className="w-full border-solid border-2 h-10 p-2 w-80 rounded-lg"
-                        onChange={(e) => formData.setFieldValue('lastName', e.target.value)}
-                    />
-                    {
-                        formData.touched.lastName && formData.errors.lastName ? (
-                            <p>{formData.errors.lastName}</p>
-                        ) : null
-                    }
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                    <Label>
-                        Email
-                    </Label>
-                    <input
-                        type="email"
-                        value={userValues.email}
-                        className="w-full border-solid border-2 h-10 p-2 w-80 rounded-lg"
-                        onChange={(e) => formData.setFieldValue('email', e.target.value)}
-                    />
-                    {
-                        formData.touched.email && formData.errors.email ? (
-                            <p>{formData.errors.email}</p>
-                        ) : null
-                    }
-                </div>
+            <div>
+                    <hr />
+                    <div className='flex justify-end px-8'>
+                        <Button
+                            className='w-24 h-10 mt-4 bg-purple-600 text-white font-semibold'
+                            onClick={formData.submitForm}
+                        >
+                            Save
+                        </Button>
+                    </div>
             </div>
         </div>
     )

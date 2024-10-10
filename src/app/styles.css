@@ -1,0 +1,8 @@
+#image-container:hover > #image-overlay {
+    display: flex;
+    cursor: pointer;
+}
+
+#image-container:hover {
+    filter: brightness(85%);
+}

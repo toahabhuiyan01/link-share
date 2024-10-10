@@ -5,6 +5,7 @@ type LinkStore = {
     userData?: IUser
     selectedView: IView
     setSelectedView: (view: IView) => void
+    setUserData: (data: IUser) => void
 }
 
 const useLinkStore = create<LinkStore>((set) => ({
