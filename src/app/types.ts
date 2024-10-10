@@ -7,6 +7,7 @@ export type ILink = {
 export type IView = 'Links' | 'Profile Details'
 
 export type IUser = {
+    _id: string
     firstName: string
     lastName: string
     email?: string

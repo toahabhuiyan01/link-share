@@ -223,7 +223,7 @@ export default function UserProfile() {
 				<hr />
 				<div className='flex justify-end px-8'>
 					<Button
-						className='w-24 h-10 mt-4 bg-purple-600 text-white font-semibold'
+						className='w-24 h-10 mt-4 bg-indigo-600 text-white font-semibold'
 						onClick={formData.submitForm}
 					>
 						Save

@@ -1,5 +1,8 @@
+import { IUser } from "@/app/types"
 import axios from "axios"
 import { Metadata } from "next"
+import TopBar from "./components/TopBar"
+import { LinksRender } from "@/app/add-edit-link/[id]/components/MobilePreview"
 
 export type PreViewType = {
     params: {
@@ -25,15 +28,41 @@ export const generateMetadata = async ({ params: { id } }: PreViewType) => {
 
 async function Page({ params: { id } }: PreViewType) {
     const origin = process.env.NEXT_PUBLIC_ORIGIN
-    const getUser = (await axios(`${origin}/api/user`, { params: { id } })).data
+    const userData = (await axios<IUser>(`${origin}/api/user`, { params: { id } })).data
 
-    console.log(getUser)
 
     return (
-        <div>
-            <h1>
-                Hello
-            </h1>
+        <div className="p-4 bg-indigo-600 h-72 rounded-b-3xl relative"
+        >
+            <TopBar id={id} />
+            <div
+                className="shadow-lg bg-white p-8 rounded-lg flex flex-row justify-center items-center w-72"
+            >
+                <LinksRender
+                    fromPreview
+                    userData={{
+                        ...userData,
+                        avatar: undefined,
+                        links: [
+                            {
+                                id: '1',
+                                name: 'WhatsApp',
+                                url: 'https://wa.me/1234567890'
+                            },
+                            {
+                                id: '2',
+                                name: 'LinkedIn',
+                                url: 'https://www.linkedin.com/in/username'
+                            },
+                            {
+                                id: '3',
+                                name: 'Github',
+                                url: 'https://github.com'
+                            }
+                        ]
+                    }}
+                />
+            </div>
         </div>
     )
 }

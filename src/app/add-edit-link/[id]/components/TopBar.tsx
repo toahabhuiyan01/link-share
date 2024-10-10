@@ -21,7 +21,7 @@ export default function TopBar() {
 			<div className='flex flex-row items-center gap-2 cursor-pointer'>
 				<Image
 					alt='Link'
-					className='bg-purple-500 rounded-lg'
+					className='bg-indigo-500 rounded-lg'
 					src={LinkImg}
 					style={
 						{
@@ -38,7 +38,7 @@ export default function TopBar() {
 				{
 					['Links', 'Profile Details'].map((item) => (
 						<Button
-							className={`w-40 flex flex-row gap-2 text-sm font-bold ${selectedView === item ? 'bg-purple-100 text-purple-500' : ' text-gray-600'}`}
+							className={`w-40 flex flex-row gap-2 text-sm font-bold ${selectedView === item ? 'bg-indigo-100 text-indigo-500' : ' text-gray-600'}`}
 							key={item}
 							onClick={() => setSelectedView(item as IView)}
 							variant={ selectedView === item ? 'secondary' : 'ghost'}
@@ -50,7 +50,7 @@ export default function TopBar() {
 				}
 			</div>
 			<Button
-				className='w-32 text-sm font-semibold text-purple-600 border-purple-800 border-2'
+				className='w-32 text-sm font-semibold text-indigo-600 border-indigo-800 border-2'
 				variant='outline'
 			>
 				Preview

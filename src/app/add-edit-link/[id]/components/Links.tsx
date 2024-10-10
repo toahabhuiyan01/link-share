@@ -77,7 +77,7 @@ function Link({ links }: LinkProps) {
 				</div>
 
 				<Button
-					className='w-full border-solid border-2 h-10 border-purple-800 text-purple-600 font-semibold'
+					className='w-full border-solid border-2 h-10 border-indigo-800 text-indigo-600 font-semibold'
 					onClick={
 						() => {
 							boardForm.setValues(values => ({ links: [...values.links, { id: getRandomString(), name: '', url: '' }] }))
@@ -158,7 +158,7 @@ function Link({ links }: LinkProps) {
 				<hr />
 				<div className='flex justify-end px-8'>
 					<Button
-						className='w-24 h-10 mt-4 bg-purple-600 text-white font-semibold'
+						className='w-24 h-10 mt-4 bg-indigo-600 text-white font-semibold'
 						onClick={boardForm.submitForm}
 					>
 						Save
