@@ -36,7 +36,13 @@ async function Page({ params: { id } }: PreViewType) {
         >
             <TopBar id={id} />
             <div
-                className="shadow-lg bg-white p-8 rounded-lg flex flex-row justify-center items-center w-72"
+                className="shadow-lg absolute bg-white px-12 py-10 rounded-xl flex flex-row justify-center items-center"
+                style={{
+                    width: '18rem',
+                    height: '28rem',
+                    left: 'calc(50% - 9rem)',
+                    top: '52%'
+                }}
             >
                 <LinksRender
                     fromPreview
@@ -44,6 +50,21 @@ async function Page({ params: { id } }: PreViewType) {
                         ...userData,
                         avatar: undefined,
                         links: [
+                            {
+                                id: '1',
+                                name: 'WhatsApp',
+                                url: 'https://wa.me/1234567890'
+                            },
+                            {
+                                id: '2',
+                                name: 'LinkedIn',
+                                url: 'https://www.linkedin.com/in/username'
+                            },
+                            {
+                                id: '3',
+                                name: 'Github',
+                                url: 'https://github.com'
+                            },
                             {
                                 id: '1',
                                 name: 'WhatsApp',

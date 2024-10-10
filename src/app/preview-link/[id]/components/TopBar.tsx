@@ -6,10 +6,10 @@ import Link from "next/link";
 function TopBar({ id }: { id: string }) {
     const origin = process.env.NEXT_PUBLIC_ORIGIN
     return (
-        <div className="bg-white flex justify-between py-4 px-8 rounded-xl">
+        <div className="bg-white flex justify-between py-2 px-4 rounded-lg">
             <Button
                 variant='outline'
-                className="border-2 border-indigo-600"
+                className="border-2 border-indigo-600 h-10"
             >
                 <Link
                     href={`/add-edit-link/${id}`}
@@ -20,7 +20,7 @@ function TopBar({ id }: { id: string }) {
             </Button>
 
             <Button
-                className="bg-indigo-600 text-indigo-100 font-semibold"
+                className="bg-indigo-600 text-indigo-100 font-semibold h-10 w-32"
                 onClick={
                     () => {
                         navigator.clipboard.writeText(`${origin}/preview-link/${id}`)

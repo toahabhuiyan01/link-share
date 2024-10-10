@@ -113,7 +113,7 @@ export function LinksRender({ userData, fromPreview }: LinksRenderProps) {
 				className='flex flex-col gap-3 overflow-y-auto'
 				style={
 					{
-						maxHeight: '14rem'
+						maxHeight: fromPreview ? '11rem' : '14rem'
 					}
 				}
 			>
