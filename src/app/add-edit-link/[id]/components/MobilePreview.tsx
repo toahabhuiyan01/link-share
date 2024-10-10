@@ -4,7 +4,6 @@ import useLinkStore from "@/app/store/LinkStore"
 import MobileMockup from '../../../../assets/images/Mobile.png'
 import UserImage from '../../../../assets/images/user-avatar.png'
 import Image from "next/image"
-import { Skeleton } from "@/components/ui/skeleton"
 import { platformTheme } from "../constants"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
@@ -38,10 +37,12 @@ export default function MobilePreview() {
                 />
 
                 <div
-                    className="absolute w-9/12 items-center p-1"
+                    className="absolute w-9/12 items-center p-1 px-10 py-8"
                     style={{
+                        width: '100%',
                         top: '4rem',
-                        left: '2rem'
+                        left: 0,
+
                     }}
                 >
                     <div className="flex flex-col justify-center w-full gap-8"> 
@@ -81,7 +82,7 @@ export default function MobilePreview() {
                         <div
                             className="flex flex-col gap-3 overflow-y-auto"
                             style={{
-                                maxHeight: '15.5rem'
+                                maxHeight: '14rem'
                             }}
                         >
                             {
@@ -124,6 +125,16 @@ export default function MobilePreview() {
                                         </div>
                                     )
                                 })
+                            }
+                            {
+                                !userData?.links.length && (
+                                    [1, 2, 3].map((_, index) => (
+                                        <p
+                                            key={index}
+                                            className="h-10 w-full bg-gray-200 rounded-lg"
+                                        />
+                                    ))
+                                )    
                             }
                         </div>
                     </div>

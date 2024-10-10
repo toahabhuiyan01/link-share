@@ -60,7 +60,7 @@ export default function UserProfile() {
                 </div>
 
                 <div
-                    className="flex flex-col gap-4 justify-between items-center bg-stone-50 p-4 rounded-lg"
+                    className="flex flex-row gap-4 justify-between items-center bg-stone-50 p-4 rounded-lg"
                 >
                     <p className="text-sm font-medium text-gray-500">
                         Profile Picture
@@ -161,7 +161,7 @@ export default function UserProfile() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-2 bg-stone-50 p-4 rounded-lg">
+                <div className="flex flex-col gap-3 bg-stone-50 p-4 rounded-lg">
                     {
                         Object.keys(fieldMap).map((key) => {
                             const field = key as KeysUserData
@@ -175,7 +175,7 @@ export default function UserProfile() {
                                         <Input
                                             type="text"
                                             name={field}
-                                            className="w-full border-solid border-2 h-10 p-2 w-96 rounded-lg"
+                                            className="w-full bg-white border-solid border-2 h-10 p-2 w-96 rounded-lg"
                                             value={userValues.firstName}
                                             onBlur={formData.handleBlur}
                                             onChange={(e) => formData.setFieldValue(field, e.target.value)}

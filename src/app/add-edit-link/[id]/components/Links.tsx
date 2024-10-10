@@ -216,7 +216,8 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
             >
                 <SelectTrigger
                     style={{
-                        height: '2.5rem'
+                        height: '2.5rem',
+                        backgroundColor: 'white'
                     }}
                 >
                     <SelectValue placeholder="Select a Platfrom" />
@@ -238,6 +239,12 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            {
+                // @ts-ignore
+                touched?.name && ('name' in errors && errors.name) ? (
+                    <p className="text-xs text-rose-700">{errors.name}</p>
+                ) : null
+            }
         </div>
 
         <div>
@@ -249,11 +256,19 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
                 style={{
                     height: '2.5rem',
                 }}
+                className='bg-white'
                 onBlur={e => onBlur(e)}
                 onChange={e => {
                     handleChange(`links[${index}].url`, e.target.value)
                 }}
             />
+
+            {
+                // @ts-ignore
+                touched?.url && ('url' in errors && errors.url) ? (
+                    <p className="text-xs text-rose-700">{errors.url}</p>
+                ) : null
+            }
         </div>
     </div>
     )
