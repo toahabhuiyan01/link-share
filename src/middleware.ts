@@ -7,6 +7,6 @@ export function middleware(req: NextRequest) {
 	}
 
 	const res = NextRes.next()
-	res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
+	res.headers.append('Access-Control-Allow-Origin', '*')
     res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT')
 }
