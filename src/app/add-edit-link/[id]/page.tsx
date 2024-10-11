@@ -8,7 +8,6 @@ import UserProfile from './components/UserProfile'
 
 import useLinkStore from '@/app/_store/LinkStore'
 import { NextResponse } from 'next/server'
-import Loading from '@/app/loading'
 
 type PageProps = {
 	params: {

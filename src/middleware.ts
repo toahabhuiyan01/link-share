@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse as NextRes, type NextResponse } from 'next/server'
+import { type NextRequest, NextResponse as NextRes } from 'next/server'
 
 
 export function middleware(req: NextRequest) {
