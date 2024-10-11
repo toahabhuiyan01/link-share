@@ -19,6 +19,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { useEffect } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
+import { Loader } from '@/app/loading'
 
 const SOCILE_MEDIA = Object.keys(platformTheme)
 const DEFAULT_LINK = { id: getRandomString(), name: '', url: '' }
@@ -75,6 +76,7 @@ function Link() {
 	useEffect(
 		() => {
 			linkForm.setValues({ links: userData?.links || [] })
+			linkForm.setTouched({})
 		},
 		[userData]
 	)
@@ -106,7 +108,7 @@ function Link() {
 					className='w-full border-solid border-2 h-10 border-indigo-800 text-indigo-600 font-semibold'
 					onClick={
 						() => {
-							linkForm.setValues(values => ({ links: [...values.links, { id: getRandomString(), name: '', url: '' }] }))
+							linkForm.setValues(values => ({ links: [{ id: getRandomString(), name: '', url: '' }, ...values.links, ] }))
 						}
 					}
 					variant='outline'
@@ -196,7 +198,7 @@ function Link() {
 						className='w-24 h-10 mt-4 bg-indigo-600 text-white font-semibold'
 						onClick={linkForm.submitForm}
 					>
-						Save
+						{linkForm.isSubmitting ? <Loader /> : 'Save'}
 					</Button>
 				</div>
 			</div>

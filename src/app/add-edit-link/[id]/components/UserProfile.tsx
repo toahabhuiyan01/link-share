@@ -17,6 +17,7 @@ import useDimensionHook from '../../../_hooks/useDimension'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { REST_API_URL } from '@/app/_utils/constants'
+import { Loader } from '@/app/loading'
 
 type UserData = Pick<IUser, 'email' | 'avatar' | 'firstName' | 'lastName'>
 type KeysUserData = keyof UserData
@@ -51,7 +52,7 @@ export default function UserProfile() {
 				
 				setUserData(response)
 				setAlert(
-					'Profile updated successfully',
+					`Profile ${userData?._id ? 'updated' : 'created'} successfully`,
 					'success'
 				)
 			} catch (e) {
@@ -74,6 +75,13 @@ export default function UserProfile() {
 					avatar: userData?.avatar || '',
 					firstName: userData?.firstName || '',
 					lastName: userData?.lastName || ''
+				})
+
+				formData.setTouched({
+					email: false,
+					avatar: false,
+					firstName: false,
+					lastName: false
 				})
 			}
 		},
@@ -167,7 +175,7 @@ export default function UserProfile() {
 													formData.handleBlur(event)
 													if(img.width > 1024 || img.height > 1024) {
 														console.log('Image must be below 1024x1024')
-														formData.setFieldError('avatar', 'Image must be below 1024x1024')
+														setAlert('Image must be below 1024x1024', 'error')
 
 														return
 													}
@@ -273,7 +281,7 @@ export default function UserProfile() {
 						disabled={!formData.isValid || formData.isSubmitting}
 						onClick={formData.submitForm}
 					>
-						Save
+						{ formData.isSubmitting ? <Loader /> : 'Save'}
 					</Button>
 				</div>
 			</div>

@@ -10,13 +10,21 @@ export default function Loading() {
                 alignItems: 'center',
                 height: '100vh',
                 width: '100vw',
-                backgroundColor: 'rgba(0,0,0,0.5)',
+                top: 0,
+                left: 0,
+                backgroundColor: 'rgba(0,0,0,0.1)',
             }}
         >
-            <LoaderCircle
-                id="loader"
-                size={100}
-            />
+            <Loader size={100} />
         </div>
+    )
+}
+
+export function Loader({ size }: { size?: number }) {
+    return (
+        <LoaderCircle
+            id="loader"
+            size={size || 20}
+        />
     )
 }
