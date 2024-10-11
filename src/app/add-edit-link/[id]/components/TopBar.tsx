@@ -1,14 +1,15 @@
+'use client'
+
 import { CircleUserRound, Eye, Link } from 'lucide-react'
 import Image from 'next/image'
 import LinkImg from '../../../../assets/images/Link.svg'
-import useDimensionHook from '../../../hooks/useDimension'
+import useDimensionHook from '../../../_hooks/useDimension'
 
 import NextLink from 'next/link'
 
 import useLinkStore from '@/app/store/LinkStore'
 import { IView } from '@/app/types'
 import { Button } from '@/components/ui/button'
-import { redirect } from 'next/dist/server/api-utils'
 
 const ICON_MAP: {[_: string]: JSX.Element} = {
 	'Links': <Link style={{ width: '18px' }} />,

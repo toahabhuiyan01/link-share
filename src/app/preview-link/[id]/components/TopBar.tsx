@@ -2,8 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import useAlertStore from '@/app/store/AlertStore'
 
 function TopBar({ id }: { id: string }) {
+    const { setAlert } = useAlertStore()
     const origin = process.env.NEXT_PUBLIC_ORIGIN
     return (
         <div
@@ -27,6 +29,10 @@ function TopBar({ id }: { id: string }) {
                 onClick={
                     () => {
                         navigator.clipboard.writeText(`${origin}/preview-link/${id}`)
+                        setAlert(
+                            'Link copied to clipboard',
+                            'success'
+                        )
                     }
                 }
             >

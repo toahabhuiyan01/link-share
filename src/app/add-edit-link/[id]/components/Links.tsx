@@ -8,9 +8,11 @@ import { GripHorizontal } from 'lucide-react'
 import * as Yup from 'yup'
 import { ILink, IUser } from '../../../types'
 import { platformTheme } from '../constants'
-import useDimensionHook from '../../../hooks/useDimension'
+import useDimensionHook from '../../../_hooks/useDimension'
 
 import useLinkStore from '@/app/store/LinkStore'
+import useAlertStore from '@/app/store/AlertStore'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -22,6 +24,7 @@ const DEFAULT_LINK = { id: getRandomString(), name: '', url: '' }
 
 function Link() {
 	const { userData, setUserData } = useLinkStore()
+	const { setAlert } = useAlertStore()
 	const { fullWidth } = useDimensionHook()
 	const sensors = useSensors(
 		useSensor(MouseSensor),
@@ -32,7 +35,7 @@ function Link() {
 		})
 	)
 
-	const boardForm = useFormik<{ links: ILink[] }>({
+	const linkForm = useFormik<{ links: ILink[] }>({
 		initialValues: { links: userData?.links || [] },
 		validateOnBlur: true,
 		onSubmit: async(values) => {
@@ -49,6 +52,11 @@ function Link() {
 					...(userData as IUser),
 					links: values.links
 				})
+
+				setAlert(
+					'Links updated successfully',
+					'success'
+				)
 			} catch (e) {
 				console.error(e)
 			}
@@ -65,12 +73,12 @@ function Link() {
 
 	useEffect(
 		() => {
-			boardForm.setValues({ links: userData?.links || [] })
+			linkForm.setValues({ links: userData?.links || [] })
 		},
 		[userData]
 	)
 
-	const formLinks = boardForm.values.links
+	const formLinks = linkForm.values.links
 
 	return (
 		<div
@@ -97,7 +105,7 @@ function Link() {
 					className='w-full border-solid border-2 h-10 border-indigo-800 text-indigo-600 font-semibold'
 					onClick={
 						() => {
-							boardForm.setValues(values => ({ links: [...values.links, { id: getRandomString(), name: '', url: '' }] }))
+							linkForm.setValues(values => ({ links: [...values.links, { id: getRandomString(), name: '', url: '' }] }))
 						}
 					}
 					variant='outline'
@@ -123,7 +131,7 @@ function Link() {
 									return
 								}
 
-								boardForm.setValues(prev => {
+								linkForm.setValues(prev => {
 									const newPrev = { ...prev }
 
 									const draggeditem = newPrev.links.splice(active.id as number, 1)[0]
@@ -144,15 +152,15 @@ function Link() {
 									{
 										formLinks.map((link, index) => (
 											<EditLink
-												errors={boardForm.errors.links?.[index]}
-												handleChange={boardForm.setFieldValue}
+												errors={linkForm.errors.links?.[index]}
+												handleChange={linkForm.setFieldValue}
 												index={index}
 												key={link.id}
 												link={link}
-												onBlur={boardForm.handleBlur}
+												onBlur={linkForm.handleBlur}
 												onRemoveLink={
 													() => {
-														boardForm.setValues(
+														linkForm.setValues(
 															values => {
 																const links = values.links.filter((_, i) => i !== index)
 																return {
@@ -163,7 +171,7 @@ function Link() {
 														)
 													}
 												}
-												touched={boardForm.touched.links?.[index]}
+												touched={linkForm.touched.links?.[index]}
 											/>
 										))
 									}
@@ -183,9 +191,9 @@ function Link() {
 				<hr />
 				<div className='flex justify-end px-8'>
 					<Button
-						disabled={!boardForm.isValid}
+						disabled={!linkForm.isValid || linkForm.isSubmitting}
 						className='w-24 h-10 mt-4 bg-indigo-600 text-white font-semibold'
-						onClick={boardForm.submitForm}
+						onClick={linkForm.submitForm}
 					>
 						Save
 					</Button>

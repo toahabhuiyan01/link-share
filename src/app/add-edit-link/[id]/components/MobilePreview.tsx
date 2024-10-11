@@ -5,13 +5,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { platformTheme } from '../constants'
 import { getContrastTextColor } from '../utils'
-import useDimensionHook from '../../../hooks/useDimension'
+import useDimensionHook from '../../../_hooks/useDimension'
 
 import useLinkStore from '@/app/store/LinkStore'
 import MobileMockup from '@/assets/images/Mobile.png'
 import UserImage from '@/assets/images/user-avatar.png'
 import { IUser } from '@/app/types'
-import { useEffect, useState } from 'react'
 
 type PlatformType = keyof typeof platformTheme
 export default function MobilePreview() {

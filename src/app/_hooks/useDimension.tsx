@@ -1,19 +1,19 @@
 'use client'
 
-import useDimensionStore from "@/app/store/DimensionStore"
 import { useMemo } from "react"
+import useWindowSize from "./useWindowSize"
 
 const useResponsive = () => {
-    const { dimansion } = useDimensionStore()
+    const { width } = useWindowSize()
     const { fullWidth, inputStyle, showIconsOnly, isMobile } = useMemo(
 		() => {
-			const wrapText = (dimansion.width < 1000 && dimansion.width > 750) || dimansion.width < 600
-			const fullWidth = dimansion.width < 750
+			const wrapText = (width < 1000 && width > 750) || width < 600
+			const fullWidth = width < 750
             const inputStyle = wrapText ? 'flex-col' : 'flex-row'
             
-            const showIconsOnly = dimansion.width < 800
+            const showIconsOnly = width < 800
 
-            const isMobile = dimansion.width < 600
+            const isMobile = width < 600
 
             return {
                 isMobile,
@@ -22,7 +22,7 @@ const useResponsive = () => {
                 showIconsOnly
 			}
 		},
-		[dimansion.width]
+		[width]
     )
     
     return { fullWidth, inputStyle, showIconsOnly, isMobile }

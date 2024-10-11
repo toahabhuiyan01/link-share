@@ -1,3 +1,5 @@
+'use client'
+
 import { useFormik } from 'formik'
 import { ImageUp } from 'lucide-react'
 import NextImage from 'next/image'
@@ -10,7 +12,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useLinkStore from '@/app/store/LinkStore'
-import useDimensionHook from '../../../hooks/useDimension'
+import useAlertStore from '@/app/store/AlertStore'
+import useDimensionHook from '../../../_hooks/useDimension'
 import axios from 'axios'
 import { useEffect } from 'react'
 
@@ -25,6 +28,7 @@ const fieldMap = {
 
 export default function UserProfile() {
 	const { userData, setUserData } = useLinkStore()
+	const { setAlert } = useAlertStore()
 
 	const { fullWidth, inputStyle, isMobile } = useDimensionHook()
 	const formData = useFormik<UserData>({
@@ -45,6 +49,10 @@ export default function UserProfile() {
 				)).data
 				
 				setUserData(response)
+				setAlert(
+					'Profile updated successfully',
+					'success'
+				)
 			} catch (e) {
 				console.error(e)
 			}
@@ -123,7 +131,7 @@ export default function UserProfile() {
 								height={200}
 								width={200}
 								alt='Profile Picture'
-								className='rounded-lg image-subject'
+								className='rounded-lg image-subject object-cover'
 								id='profile-picture'
 								src={userValues.avatar || UserDefaultImage}
 								style={
@@ -261,7 +269,7 @@ export default function UserProfile() {
 				<div className='flex justify-end px-8'>
 					<Button
 						className={`${isMobile ? 'w-full' : 'w-24'} h-10 mt-4 bg-indigo-600 text-white font-semibold`}
-						disabled={!formData.isValid}
+						disabled={!formData.isValid || formData.isSubmitting}
 						onClick={formData.submitForm}
 					>
 						Save

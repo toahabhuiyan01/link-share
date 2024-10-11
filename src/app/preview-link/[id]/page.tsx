@@ -19,6 +19,7 @@ export const generateMetadata = async ({ params: { id } }: PreViewType) => {
     try {
         user = (await axios(`${origin}/api/user`, { params: { id } })).data
     } catch (error) {
+        console.error(error)
         return {} as Metadata
     }
 
@@ -41,6 +42,7 @@ async function Page({ params: { id } }: PreViewType) {
     try {
         userData = (await axios<IUser>(`${origin}/api/user`, { params: { id } })).data
     } catch (error) {
+        console.error(error)
         redirect('/add-edit-link/new')
     }
 

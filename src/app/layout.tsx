@@ -1,6 +1,7 @@
 import localFont from 'next/font/local'
 import './globals.css'
 import './styles.css'
+import AlertCentral from './_components/AlertCentral'
 
 
 const geistSans = localFont({
@@ -22,9 +23,14 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-50`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-50 relative`}
+				style={{
+					height: '100vh',
+					width: '100vw',
+				}}
 			>
 				{children}
+				<AlertCentral />
 			</body>
 		</html>
 	)
