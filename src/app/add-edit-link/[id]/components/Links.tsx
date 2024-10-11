@@ -7,7 +7,7 @@ import { useFormik } from 'formik'
 import { GripHorizontal } from 'lucide-react'
 import * as Yup from 'yup'
 import { ILink, IUser } from '../../../types'
-import { platformTheme } from '../../../_utils/constants'
+import { platformTheme, PlatformType, REST_API_URL } from '../../../_utils/constants'
 import useDimensionHook from '../../../_hooks/useDimension'
 
 import useLinkStore from '@/app/_store/LinkStore'
@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useEffect } from 'react'
 import axios from 'axios'
+import Image from 'next/image'
 
 const SOCILE_MEDIA = Object.keys(platformTheme)
 const DEFAULT_LINK = { id: getRandomString(), name: '', url: '' }
@@ -41,7 +42,7 @@ function Link() {
 		onSubmit: async(values) => {
 			try {
 				await axios.post(
-					'/api/user',
+					`${REST_API_URL}/api/user`,
 					{
 						...values,
 						id: userData?._id
@@ -64,7 +65,7 @@ function Link() {
 		validationSchema: Yup.object().shape({
 			links: Yup.array().of(
 				Yup.object().shape({
-					name: Yup.string().trim().required('Select a Social Media'),
+					name: Yup.string().trim().required('Select a Platform'),
 					url: Yup.string().trim().required('URL is required').url('This need to be a valid URL')
 				})
 			)
@@ -291,9 +292,16 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
 									<SelectItem
 										key={item}
 										value={item}
-										// disabled={formLinks.some((value, i) => value.name === item)}
 									>
-										{item}
+										<div className='flex flex-row gap-2'>
+											<Image
+												height={20}
+												width={20}
+												src={platformTheme[item as PlatformType].icon}
+												alt='icon'
+											/>
+											{item}
+										</div>
 									</SelectItem>
 								))
 							}

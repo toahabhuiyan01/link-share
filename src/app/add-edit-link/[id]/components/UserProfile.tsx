@@ -16,6 +16,7 @@ import useAlertStore from '@/app/_store/AlertStore'
 import useDimensionHook from '../../../_hooks/useDimension'
 import axios from 'axios'
 import { useEffect } from 'react'
+import { REST_API_URL } from '@/app/_utils/constants'
 
 type UserData = Pick<IUser, 'email' | 'avatar' | 'firstName' | 'lastName'>
 type KeysUserData = keyof UserData
@@ -41,7 +42,7 @@ export default function UserProfile() {
 		onSubmit: async(values) => {
 			try {
 				const response = (await axios.post(
-					'/api/user',
+					`${REST_API_URL}/api/user`,
 					{
 						...values,
 						id: userData?._id

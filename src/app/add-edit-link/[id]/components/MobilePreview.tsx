@@ -3,7 +3,7 @@
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { platformTheme } from '../../../_utils/constants'
+import { platformTheme, PlatformType } from '../../../_utils/constants'
 import { getContrastTextColor } from '../../../_utils/color-utils'
 import useDimensionHook from '../../../_hooks/useDimension'
 
@@ -13,7 +13,6 @@ import UserImage from '@/assets/images/user-avatar.png'
 import { IUser } from '@/app/types'
 import { AspectRatio } from '@radix-ui/react-aspect-ratio'
 
-type PlatformType = keyof typeof platformTheme
 export default function MobilePreview() {
 	const { userData } = useLinkStore()
 	const { fullWidth } = useDimensionHook()

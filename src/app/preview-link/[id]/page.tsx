@@ -5,6 +5,7 @@ import TopBar from "./components/TopBar"
 import { LinksRender } from "@/app/add-edit-link/[id]/components/MobilePreview"
 import { redirect } from "next/navigation"
 import './styles.css'
+import { REST_API_URL } from "@/app/_utils/constants"
 
 export type PreViewType = {
     params: {
@@ -13,11 +14,10 @@ export type PreViewType = {
 }
 
 export const generateMetadata = async ({ params: { id } }: PreViewType) => {
-    const origin = process.env.NEXT_PUBLIC_ORIGIN
     let user
 
     try {
-        user = (await axios(`${origin}/api/user`, { params: { id } })).data
+        user = (await axios(`${REST_API_URL}/api/user`, { params: { id } })).data
     } catch (error) {
         console.error(error)
         return {} as Metadata
@@ -36,11 +36,10 @@ export const generateMetadata = async ({ params: { id } }: PreViewType) => {
 
 
 async function Page({ params: { id } }: PreViewType) {
-    const origin = process.env.NEXT_PUBLIC_ORIGIN
     let userData
 
     try {
-        userData = (await axios<IUser>(`${origin}/api/user`, { params: { id } })).data
+        userData = (await axios<IUser>(`${REST_API_URL}/api/user`, { params: { id } })).data
     } catch (error) {
         console.error(error)
         redirect('/add-edit-link/new')

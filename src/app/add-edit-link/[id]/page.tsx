@@ -8,6 +8,7 @@ import UserProfile from './components/UserProfile'
 
 import useLinkStore from '@/app/_store/LinkStore'
 import { NextResponse } from 'next/server'
+import Loading from '@/app/loading'
 
 type PageProps = {
 	params: {
@@ -15,7 +16,7 @@ type PageProps = {
 	}
 }
 export default function Page({ params: { id } }: PageProps) {
-	const { selectedView, setSelectedView, fetchAndSetUserData } = useLinkStore()
+	const { selectedView, setSelectedView, fetchAndSetUserData, loading } = useLinkStore()
 
 	useEffect(
 		() => {
@@ -41,7 +42,7 @@ export default function Page({ params: { id } }: PageProps) {
 
 	return (
 		<div
-			className='flex flex-col gap-4 bg-stone-50 p-4 overflow-hidden'
+			className='flex flex-col gap-4 bg-stone-50 p-4 overflow-hidden relative'
 		>
 			<TopBar />
 			<div
@@ -61,6 +62,7 @@ export default function Page({ params: { id } }: PageProps) {
 					)
 				}
 			</div>
+			{loading && <Loading />}
 		</div>
 	)
 }

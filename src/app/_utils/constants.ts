@@ -1,5 +1,3 @@
-"use client"
-
 import Facebook from '@/assets/images/facebook.svg'
 import GitHub from '@/assets/images/github.svg'
 import Instagram from '@/assets/images/insta.svg'
@@ -48,5 +46,7 @@ export const platformTheme = {
 		icon: Tiktok
 	}
 }
+
+export type PlatformType = keyof typeof platformTheme
 
 export const REST_API_URL = 'https://link-share-liard.vercel.app'
