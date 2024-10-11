@@ -9,6 +9,10 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import useLinkStore from '@/app/store/LinkStore'
+import useDimensionHook from '../../../hooks/useDimension'
+import axios from 'axios'
+import { useEffect } from 'react'
 
 type UserData = Pick<IUser, 'email' | 'avatar' | 'firstName' | 'lastName'>
 type KeysUserData = keyof UserData
@@ -20,24 +24,52 @@ const fieldMap = {
 
 
 export default function UserProfile() {
+	const { userData, setUserData } = useLinkStore()
+
+	const { fullWidth, inputStyle, isMobile } = useDimensionHook()
 	const formData = useFormik<UserData>({
 		initialValues: {
-			email: '',
-			avatar: '',
-			firstName: '',
-			lastName: ''
+			email: userData?.email || '',
+			avatar: userData?.avatar || '',
+			firstName: userData?.firstName || '',
+			lastName: userData?.lastName || ''
 		},
-		onSubmit: (values) => {
-			console.log(values)
+		onSubmit: async(values) => {
+			try {
+				const response = (await axios.post(
+					'/api/user',
+					{
+						...values,
+						id: userData?._id
+					}
+				)).data
+				
+				setUserData(response)
+			} catch (e) {
+				console.error(e)
+			}
 		},
 		validateOnBlur: true,
 		validationSchema: Yup.object().shape({
 			email: Yup.string().trim().email('This need to be a valid email'),
-			avatar: Yup.string().trim().required('Profile Picture is required'),
 			firstName: Yup.string().trim().required('First Name is required'),
 			lastName: Yup.string().trim().required('Last Name is required')
 		})
 	})
+
+	useEffect(
+		() => {
+			if (userData) {
+				formData.setValues({
+					email: userData?.email || '',
+					avatar: userData?.avatar || '',
+					firstName: userData?.firstName || '',
+					lastName: userData?.lastName || ''
+				})
+			}
+		},
+		[userData]
+	)
 
 	const userValues = formData.values
 
@@ -46,7 +78,7 @@ export default function UserProfile() {
 			className='flex flex-col gap-4 bg-white rounded-lg'
 			style={
 				{
-					width: 'calc(60% - .5rem)'
+					width: fullWidth ? '100%' : 'calc(60% - .5rem)'
 				}
 			}
 		>
@@ -68,7 +100,7 @@ export default function UserProfile() {
 				</div>
 
 				<div
-					className='flex flex-row gap-4 justify-between items-center bg-stone-50 p-4 rounded-lg'
+					className={`flex ${inputStyle} gap-4 justify-between items-center bg-stone-50 p-4 rounded-lg`}
 				>
 					<p className='text-sm font-medium text-gray-500'>
 						Profile Picture
@@ -88,9 +120,10 @@ export default function UserProfile() {
 							ratio={1 / 1}
 						>
 							<NextImage
+								height={200}
+								width={200}
 								alt='Profile Picture'
 								className='rounded-lg image-subject'
-								height={200}
 								id='profile-picture'
 								src={userValues.avatar || UserDefaultImage}
 								style={
@@ -99,7 +132,6 @@ export default function UserProfile() {
 										maxWidth: '200px'
 									}
 								}
-								width={200}
 							/>
 
 							<input
@@ -123,14 +155,16 @@ export default function UserProfile() {
 												img.src = urlData
 
 												img.onload = () => {
+													formData.handleBlur(event)
 													if(img.width > 1024 || img.height > 1024) {
+														console.log('Image must be below 1024x1024')
 														formData.setFieldError('avatar', 'Image must be below 1024x1024')
 
 														return
 													}
 
+													formData.setFieldError('avatar', undefined)
 													formData.setFieldValue('avatar', e.target!.result as string)
-													formData.handleBlur(event)
 												}
 											}
 
@@ -168,7 +202,7 @@ export default function UserProfile() {
 						</div>
 						{
 							formData.touched.avatar && formData.errors.avatar ? (
-								<p>
+								<p className='text-xs text-rose-700'>
 									{formData.errors.avatar}
 								</p>
 							) : null
@@ -193,17 +227,20 @@ export default function UserProfile() {
 								<div
 									className='flex flex-col'
 									key={key}>
-									<div className='flex flex-row items-center justify-between'>
+									<div className={`flex ${inputStyle} justify-between`}>
 										<Label className='text-nowrap text-sm text-gray-500 font-semibold'>
 											{fieldMap[key as keyof typeof fieldMap]}
 										</Label>
 										<Input
 											className='w-full bg-white border-solid border-2 h-10 p-2 w-96 rounded-lg'
+											style={{
+												maxWidth: '100%'
+											}}
 											name={field}
 											onBlur={formData.handleBlur}
 											onChange={(e) => formData.setFieldValue(field, e.target.value)}
 											type='text'
-											value={userValues.firstName}
+											value={userValues[field]}
 										/>
 									</div>
 									{
@@ -223,7 +260,8 @@ export default function UserProfile() {
 				<hr />
 				<div className='flex justify-end px-8'>
 					<Button
-						className='w-24 h-10 mt-4 bg-indigo-600 text-white font-semibold'
+						className={`${isMobile ? 'w-full' : 'w-24'} h-10 mt-4 bg-indigo-600 text-white font-semibold`}
+						disabled={!formData.isValid}
 						onClick={formData.submitForm}
 					>
 						Save

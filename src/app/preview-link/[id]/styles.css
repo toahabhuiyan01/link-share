@@ -1,0 +1,13 @@
+
+
+@media only screen and (max-width: 550px) {
+    #container-preview {
+        background-color: white;
+        height: 100vh;
+    }
+
+    #profile-card {
+        box-shadow: none;
+        top: 5rem !important
+    }
+}

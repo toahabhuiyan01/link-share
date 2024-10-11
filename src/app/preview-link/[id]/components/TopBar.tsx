@@ -6,7 +6,10 @@ import Link from "next/link";
 function TopBar({ id }: { id: string }) {
     const origin = process.env.NEXT_PUBLIC_ORIGIN
     return (
-        <div className="bg-white flex justify-between py-2 px-4 rounded-lg">
+        <div
+            id='topbar'
+            className="bg-white flex justify-between py-2 px-4 rounded-lg"
+        >
             <Button
                 variant='outline'
                 className="border-2 border-indigo-600 h-10"

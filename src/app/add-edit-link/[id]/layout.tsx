@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 const DynamicComponentWithNoSSR = dynamic(
-  () =>  import('./ImportDimensionHelper'),
+  () =>  import('../../hooks/ImportDimensionHelper'),
   { ssr: false }
 )
 

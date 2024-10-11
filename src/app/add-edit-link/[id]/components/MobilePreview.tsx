@@ -5,19 +5,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { platformTheme } from '../constants'
 import { getContrastTextColor } from '../utils'
+import useDimensionHook from '../../../hooks/useDimension'
 
 import useLinkStore from '@/app/store/LinkStore'
 import MobileMockup from '@/assets/images/Mobile.png'
 import UserImage from '@/assets/images/user-avatar.png'
 import { IUser } from '@/app/types'
+import { useEffect, useState } from 'react'
 
 type PlatformType = keyof typeof platformTheme
 export default function MobilePreview() {
 	const { userData } = useLinkStore()
+	const { fullWidth } = useDimensionHook()
 
 	return (
 		<div
-			className='flex justify-center items-center bg-white rounded-lg'
+			className={`flex ${fullWidth ? 'hidden' : ''} justify-center items-center bg-white rounded-lg`}
 			style={
 				{
 					width: 'calc(40% - .5rem)',
@@ -74,16 +77,12 @@ export function LinksRender({ userData, fromPreview }: LinksRenderProps) {
 		<div className='flex flex-col justify-center w-full gap-8'>
 			<div className='flex flex-col gap-6 items-center w-full'>
 				<Image
-					alt='Profile Picture'
-					className='border-2 border-indigo-700'
+					width={80}
+					height={80}
 					src={userData?.avatar || UserImage}
-					style={
-						{
-							width: '80px',
-							height: '80px',
-							borderRadius: '50%'
-						}
-					}
+					alt='Profile Picture'
+					style={{ borderRadius: '50%' }}
+					className='border-2 border-indigo-700'
 				/>
 				<div className='w-full gap-1 flex flex-col items-center'>
 					{

@@ -12,8 +12,8 @@ type DimensionStoreType = {
 
 const useDimensionStore = create<DimensionStoreType>((set) => ({
 	dimansion: {
-		width: window.innerWidth,
-		height: window.innerHeight
+		width: window?.innerWidth,
+		height: window?.innerHeight
 	},
 	subscribe: () => {
 		window.addEventListener('resize', () => {

@@ -6,23 +6,23 @@ import { CSS } from '@dnd-kit/utilities'
 import { useFormik } from 'formik'
 import { GripHorizontal } from 'lucide-react'
 import * as Yup from 'yup'
-import { ILink } from '../../../types'
+import { ILink, IUser } from '../../../types'
 import { platformTheme } from '../constants'
+import useDimensionHook from '../../../hooks/useDimension'
 
 import useLinkStore from '@/app/store/LinkStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
-
-type LinkProps = {
-    links?: ILink[]
-}
+import { useEffect } from 'react'
+import axios from 'axios'
 
 const SOCILE_MEDIA = Object.keys(platformTheme)
+const DEFAULT_LINK = { id: getRandomString(), name: '', url: '' }
 
-function Link({ links }: LinkProps) {
-	const { setUserData } = useLinkStore()
+function Link() {
+	const { userData, setUserData } = useLinkStore()
+	const { fullWidth } = useDimensionHook()
 	const sensors = useSensors(
 		useSensor(MouseSensor),
 		useSensor(TouchSensor),
@@ -33,15 +33,25 @@ function Link({ links }: LinkProps) {
 	)
 
 	const boardForm = useFormik<{ links: ILink[] }>({
-		initialValues: { links: links || [] },
+		initialValues: { links: userData?.links || [] },
 		validateOnBlur: true,
 		onSubmit: async(values) => {
-			setUserData({
-				firstName: 'toaha',
-				lastName: 'bhuiyan',
-				email: 'toahabhuiyan@gmail.com',
-				links: values.links
-			})
+			try {
+				await axios.post(
+					'/api/user',
+					{
+						...values,
+						id: userData?._id
+					}
+				)
+				
+				setUserData({
+					...(userData as IUser),
+					links: values.links
+				})
+			} catch (e) {
+				console.error(e)
+			}
 		},
 		validationSchema: Yup.object().shape({
 			links: Yup.array().of(
@@ -49,9 +59,16 @@ function Link({ links }: LinkProps) {
 					name: Yup.string().trim().required('Select a Social Media'),
 					url: Yup.string().trim().required('URL is required').url('This need to be a valid URL')
 				})
-			).min(1)
+			)
 		})
 	})
+
+	useEffect(
+		() => {
+			boardForm.setValues({ links: userData?.links || [] })
+		},
+		[userData]
+	)
 
 	const formLinks = boardForm.values.links
 
@@ -60,7 +77,7 @@ function Link({ links }: LinkProps) {
 			className='flex flex-col bg-white rounded-lg'
 			style={
 				{
-					width: 'calc(60% - .5rem)'
+					width: fullWidth ? '100%' : 'calc(60% - .5rem)'
 				}
 			}
 		>
@@ -135,7 +152,15 @@ function Link({ links }: LinkProps) {
 												onBlur={boardForm.handleBlur}
 												onRemoveLink={
 													() => {
-														boardForm.setValues(values => ({ links: values.links.filter((_, i) => i !== index) }))
+														boardForm.setValues(
+															values => {
+																const links = values.links.filter((_, i) => i !== index)
+																return {
+																	...values,
+																	links: links.length ? links : [DEFAULT_LINK]
+																}
+															}
+														)
 													}
 												}
 												touched={boardForm.touched.links?.[index]}
@@ -158,6 +183,7 @@ function Link({ links }: LinkProps) {
 				<hr />
 				<div className='flex justify-end px-8'>
 					<Button
+						disabled={!boardForm.isValid}
 						className='w-24 h-10 mt-4 bg-indigo-600 text-white font-semibold'
 						onClick={boardForm.submitForm}
 					>
@@ -186,6 +212,8 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
 		transform,
 		transition
 	} = useSortable({ id: index.toString() })
+
+	errors = errors || {}
 
 	return (
 		<div
@@ -222,9 +250,9 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
 			</div>
 			<div
 			>
-				<Label>
+				<p className='text-xs font-semibold text-gray-500'>
 					Platform
-				</Label>
+				</p>
 				<Select
 					// @ts-expect-error here we need to forfully pass the event
 					onOpenChange={isOpen => !isOpen && onBlur({ target: { name: `links[${index}].name`, value: link.name } })}
@@ -275,9 +303,9 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
 			</div>
 
 			<div>
-				<Label>
+				<p className='text-xs font-semibold text-gray-500'>
 					Link
-				</Label>
+				</p>
 				<Input
 					className='bg-white'
 					name={`links[${index}].url`}
@@ -298,7 +326,7 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
 
 				{
 					// @ts-expect-error error will be an object if there is links
-					touched?.url && ('url' in errors && errors.url) ? (
+					touched?.url && ('url'  in errors && errors?.url) ? (
 						<p className='text-xs text-rose-700'>
 							{errors.url}
 						</p>

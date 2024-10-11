@@ -1,18 +1,51 @@
 'use client'
 
-import Link from './components/Links'
+import { useEffect } from 'react'
+import LinkView from './components/Links'
 import MobilePreview from './components/MobilePreview'
 import TopBar from './components/TopBar'
 import UserProfile from './components/UserProfile'
 
 import useLinkStore from '@/app/store/LinkStore'
+import { NextResponse } from 'next/server'
+import Loading from '@/app/loading'
+
+type PageProps = {
+	params: {
+		id: string
+	}
+}
+export default function Page({ params: { id } }: PageProps) {
+	const { selectedView, setSelectedView, fetchAndSetUserData, loading } = useLinkStore()
+
+	useEffect(
+		() => {
+			if(id === 'new') {
+				setSelectedView('Profile Details')
+
+				return
+			}
+
+			getUserData()
+		},
+		[]
+	)
+
+	async function getUserData() {
+		try {
+			await fetchAndSetUserData(id)
+		} catch(error) {
+			console.log(error)
+			NextResponse.redirect(new URL('/add-edit-link/new', ))
+		}
+	}
 
 
-export default function Page() {
-	const { selectedView } = useLinkStore()
-
-	// const data = axios('/api/user')
-
+	if (loading) {
+		return (
+			<Loading />
+		)
+	}
 
 	return (
 		<div
@@ -30,7 +63,7 @@ export default function Page() {
 				<MobilePreview />
 				{
 					selectedView === 'Links' ? (
-						<Link />
+						<LinkView />
 					) : (
 						<UserProfile />
 					)

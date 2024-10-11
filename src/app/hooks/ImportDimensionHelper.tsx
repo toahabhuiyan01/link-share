@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect } from "react";
-import useDimensionStore from "../../store/DimensionStore";
+import useDimensionStore from "../store/DimensionStore";
 
 function Helper() {
     const { subscribe } = useDimensionStore();
     useEffect(subscribe, [subscribe])
 
-    return null
+   return null
 }
 
 export default Helper

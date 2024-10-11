@@ -4,11 +4,26 @@ import { IUser } from '../app/types'
 export const userSchema = new Schema<IUser>({
 	firstName: { type: String, required: true },
 	lastName: { type: String, required: true },
-	email: { type: String, required: true },
-	avatar: { type: String, required: true },
+	email: {
+		type: String,
+		required: false,
+		match: [
+			/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 
+			'Please enter a valid email address' // Custom error message for invalid email
+		]
+	},
+	avatar: { type: String, required: false },
 	links: [{
+		id: { type: String, required: true },
 		name: { type: String, required: true },
-		url: { type: String, required: true }
+		url: {
+			type: String,
+			required: true,
+			match: [
+				/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/, 
+				'Please enter a valid URL'
+			]
+		}
 	}]
 })
 

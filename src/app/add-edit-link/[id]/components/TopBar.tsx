@@ -1,10 +1,14 @@
-import { CircleUserRound, Link } from 'lucide-react'
+import { CircleUserRound, Eye, Link } from 'lucide-react'
 import Image from 'next/image'
 import LinkImg from '../../../../assets/images/Link.svg'
+import useDimensionHook from '../../../hooks/useDimension'
+
+import NextLink from 'next/link'
 
 import useLinkStore from '@/app/store/LinkStore'
 import { IView } from '@/app/types'
 import { Button } from '@/components/ui/button'
+import { redirect } from 'next/dist/server/api-utils'
 
 const ICON_MAP: {[_: string]: JSX.Element} = {
 	'Links': <Link style={{ width: '18px' }} />,
@@ -12,7 +16,9 @@ const ICON_MAP: {[_: string]: JSX.Element} = {
 }
 
 export default function TopBar() {
-	const { selectedView, setSelectedView } = useLinkStore()
+	const { selectedView, setSelectedView, userData } = useLinkStore()
+
+	const { showIconsOnly } = useDimensionHook()
 
 	return (
 		<div
@@ -30,30 +36,43 @@ export default function TopBar() {
 						}
 					}
 				/>
-				<p className='text-2xl font-bold'>
-					devlinks
-				</p>
+				{
+					!showIconsOnly && (
+						<p className='text-2xl font-bold'>
+							devlinks
+						</p>
+					)
+				}
 			</div>
 			<div className='flex flex-row gap-4'>
 				{
 					['Links', 'Profile Details'].map((item) => (
 						<Button
-							className={`w-40 flex flex-row gap-2 text-sm font-bold ${selectedView === item ? 'bg-indigo-100 text-indigo-500' : ' text-gray-600'}`}
+							className={`${showIconsOnly ? 'w-16' : 'w-40'} flex flex-row gap-2 text-sm font-bold ${selectedView === item ? 'bg-indigo-100 text-indigo-500' : ' text-gray-600'}`}
 							key={item}
+							disabled={ !userData && item === 'Links'}
 							onClick={() => setSelectedView(item as IView)}
 							variant={ selectedView === item ? 'secondary' : 'ghost'}
 						>
 							{ICON_MAP[item]}
-							{item}
+							{showIconsOnly ? '' : item}
 						</Button>
 					))
 				}
 			</div>
 			<Button
-				className='w-32 text-sm font-semibold text-indigo-600 border-indigo-800 border-2'
+				className={`${showIconsOnly ? 'w-16' : 'w-32'} text-sm font-semibold text-indigo-600 border-indigo-800 border-2`}
 				variant='outline'
+				disabled={!userData}
+				onClick={
+					() => {
+						
+					}
+				}
 			>
-				Preview
+				<NextLink href={`/preview-link/${userData?._id}`}>
+					{showIconsOnly ? <Eye /> : 'Preview'}
+				</NextLink>
 			</Button>
 		</div>
 	)
