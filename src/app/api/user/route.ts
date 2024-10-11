@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-import dbConnect, { UserModel } from '@/lib/dbconn'
+import dbConnect, { UserModel } from '@/app/_utils/dbconn'
 
 export async function GET(req: NextRequest) {
 	await dbConnect()
@@ -43,5 +42,10 @@ export async function POST(req: NextRequest) {
 		)
 	}
 	
-	return new NextResponse(JSON.stringify(user), { status: 200 })
+	return new NextResponse(
+		JSON.stringify(user),
+		{
+			status: 200,
+		}
+	)
 }

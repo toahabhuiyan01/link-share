@@ -2,7 +2,10 @@ import localFont from 'next/font/local'
 import './globals.css'
 import './styles.css'
 import AlertCentral from './_components/AlertCentral'
+import axios from 'axios'
+import { REST_API_URL } from './_utils/constants'
 
+axios.defaults.baseURL = REST_API_URL
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',

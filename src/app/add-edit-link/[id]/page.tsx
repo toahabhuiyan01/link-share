@@ -6,7 +6,7 @@ import MobilePreview from './components/MobilePreview'
 import TopBar from './components/TopBar'
 import UserProfile from './components/UserProfile'
 
-import useLinkStore from '@/app/store/LinkStore'
+import useLinkStore from '@/app/_store/LinkStore'
 import { NextResponse } from 'next/server'
 import Loading from '@/app/loading'
 
@@ -16,7 +16,7 @@ type PageProps = {
 	}
 }
 export default function Page({ params: { id } }: PageProps) {
-	const { selectedView, setSelectedView, fetchAndSetUserData, loading } = useLinkStore()
+	const { selectedView, setSelectedView, fetchAndSetUserData } = useLinkStore()
 
 	useEffect(
 		() => {
@@ -38,13 +38,6 @@ export default function Page({ params: { id } }: PageProps) {
 			console.log(error)
 			NextResponse.redirect(new URL('/add-edit-link/new', ))
 		}
-	}
-
-
-	if (loading) {
-		return (
-			<Loading />
-		)
 	}
 
 	return (

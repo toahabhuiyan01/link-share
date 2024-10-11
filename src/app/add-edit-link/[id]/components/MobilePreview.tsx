@@ -3,14 +3,15 @@
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { platformTheme } from '../constants'
-import { getContrastTextColor } from '../utils'
+import { platformTheme } from '../../../_utils/constants'
+import { getContrastTextColor } from '../../../_utils/color-utils'
 import useDimensionHook from '../../../_hooks/useDimension'
 
-import useLinkStore from '@/app/store/LinkStore'
+import useLinkStore from '@/app/_store/LinkStore'
 import MobileMockup from '@/assets/images/Mobile.png'
 import UserImage from '@/assets/images/user-avatar.png'
 import { IUser } from '@/app/types'
+import { AspectRatio } from '@radix-ui/react-aspect-ratio'
 
 type PlatformType = keyof typeof platformTheme
 export default function MobilePreview() {
@@ -75,14 +76,22 @@ export function LinksRender({ userData, fromPreview }: LinksRenderProps) {
 	return (
 		<div className='flex flex-col justify-center w-full gap-8'>
 			<div className='flex flex-col gap-6 items-center w-full'>
-				<Image
-					width={80}
-					height={80}
-					src={userData?.avatar || UserImage}
-					alt='Profile Picture'
-					style={{ borderRadius: '50%' }}
-					className='border-2 border-indigo-700'
-				/>
+				<div className='h-20 w-20'>
+					<AspectRatio ratio={1 / 1}>
+						<Image
+							width={80}
+							height={80}
+							src={userData?.avatar || UserImage}
+							alt='Profile Picture'
+							style={{
+								borderRadius: '50%',
+								minHeight: '80px',
+								minWidth: '80px'
+							}}
+							className='border-2 border-indigo-700 object-cover'
+						/>
+					</AspectRatio>
+				</div>
 				<div className='w-full gap-1 flex flex-col items-center'>
 					{
 						userData?.firstName || userData?.lastName ? (

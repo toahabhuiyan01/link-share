@@ -7,7 +7,7 @@ import useDimensionHook from '../../../_hooks/useDimension'
 
 import NextLink from 'next/link'
 
-import useLinkStore from '@/app/store/LinkStore'
+import useLinkStore from '@/app/_store/LinkStore'
 import { IView } from '@/app/types'
 import { Button } from '@/components/ui/button'
 

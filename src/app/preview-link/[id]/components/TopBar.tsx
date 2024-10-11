@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import useAlertStore from '@/app/store/AlertStore'
+import useAlertStore from '@/app/_store/AlertStore'
 
 function TopBar({ id }: { id: string }) {
     const { setAlert } = useAlertStore()

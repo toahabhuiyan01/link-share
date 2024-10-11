@@ -1,6 +1,6 @@
 'use client'
 
-import useAlertStore from "../store/AlertStore"
+import useAlertStore from "../_store/AlertStore"
 import { Terminal, X } from "lucide-react"
 import { useEffect } from "react"
 function AlertCentral() {

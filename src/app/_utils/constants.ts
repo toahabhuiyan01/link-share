@@ -48,3 +48,5 @@ export const platformTheme = {
 		icon: Tiktok
 	}
 }
+
+export const REST_API_URL = 'https://link-share-liard.vercel.app'
