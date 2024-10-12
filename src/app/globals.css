@@ -76,3 +76,13 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none
+}
+
+div::-webkit-scrollbar {
+  display: none;
+}

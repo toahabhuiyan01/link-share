@@ -53,7 +53,7 @@ async function Page({ params: { id } }: PreViewType) {
             <TopBar id={id} />
             <div
                 id="profile-card"
-                className="shadow-lg absolute bg-white px-12 py-10 rounded-xl flex flex-row justify-center items-center"
+                className="shadow-lg absolute bg-white px-8 py-10 rounded-xl flex flex-row justify-center items-center"
                 style={{
                     width: '18rem',
                     height: '28rem',

@@ -3,7 +3,7 @@
 ## QuickStart
 ```
 npm install
-npm run dev # Frontend running at http://localhost:3000
+npm run dev # Frontend running at (http://localhost:3000)
 ```
 
 #### Please Checkout the deployed site if you face an issue while setup and Installation
@@ -15,7 +15,7 @@ Here I used the hosted backend API for REST operations
 - goto (http://localhost:3000)
 - create an user by inputing the user details
 - than you can input the links and also can see the preview page.
-- add link and adjust links by Dran and Drop, and see the sample preview view on the left side.
+- add link and adjust links by Drag and Drop, and see the sample preview view on the left side.
 - Click on the `Preview` Button the see the preview view.
 
 

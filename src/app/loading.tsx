@@ -12,7 +12,7 @@ export default function Loading() {
                 width: '100vw',
                 top: 0,
                 left: 0,
-                backgroundColor: 'rgba(0,0,0,0.1)',
+                backgroundColor: 'rgba(0,0,0,0.2)',
             }}
         >
             <Loader size={100} />

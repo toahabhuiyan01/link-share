@@ -1,6 +1,6 @@
 'use client'
 
-import { closestCorners, DndContext, DragEndEvent, KeyboardSensor, MouseSensor, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { closestCorners, DndContext, DragEndEvent, KeyboardSensor, MouseSensor, PointerSensor, PointerSensorOptions, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useFormik } from 'formik'
@@ -23,18 +23,19 @@ import { Loader } from '@/app/loading'
 
 const SOCILE_MEDIA = Object.keys(platformTheme)
 const DEFAULT_LINK = { id: getRandomString(), name: '', url: '' }
+const ACTIVATION_CONSTRAINT: Partial<PointerSensorOptions> = {
+	activationConstraint: { distance: 10, delay: 200 }
+}
+
 
 function Link() {
 	const { userData, setUserData } = useLinkStore()
 	const { setAlert } = useAlertStore()
-	const { fullWidth } = useDimensionHook()
+	const { fullWidth, isMobile } = useDimensionHook()
 	const sensors = useSensors(
-		useSensor(MouseSensor),
+		useSensor(MouseSensor, ACTIVATION_CONSTRAINT),
 		useSensor(TouchSensor),
-		useSensor(PointerSensor),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates
-		})
+		useSensor(PointerSensor)
 	)
 
 	const linkForm = useFormik<{ links: ILink[] }>({
@@ -93,7 +94,12 @@ function Link() {
 			}
 		>
 			<div
-				className='flex flex-col gap-4 p-8 bg-white rounded-lg'
+				className='flex flex-col gap-4 p-8 bg-white rounded-lg overflow-scroll'
+				style={
+					{
+						height: 'calc(100% - 5.25rem)'
+					}
+				}
 			>
 				<div className='flex flex-col gap-1'>
 					<p className='text-3xl font-extrabold'>
@@ -195,7 +201,7 @@ function Link() {
 				<div className='flex justify-end px-8'>
 					<Button
 						disabled={!linkForm.isValid || linkForm.isSubmitting}
-						className='w-24 h-10 mt-4 bg-indigo-600 text-white font-semibold'
+						className={`${isMobile ? 'w-full' : 'w-24'} h-10 mt-4 bg-indigo-600 text-white font-semibold`}
 						onClick={linkForm.submitForm}
 					>
 						{linkForm.isSubmitting ? <Loader /> : 'Save'}

@@ -230,7 +230,7 @@ export default function UserProfile() {
 							Image must be below 1024x1024.
 						</p>
 						<p className='text-xs font-medium text-gray-500'>
-							User PNG,JPG, or BMP format
+							Use PNG,JPG, or BMP format
 						</p>
 					</div>
 				</div>
@@ -273,7 +273,7 @@ export default function UserProfile() {
 					}
 				</div>
 			</div>
-			<div>
+			<div className='w-full'>
 				<hr />
 				<div className='flex justify-end px-8'>
 					<Button
