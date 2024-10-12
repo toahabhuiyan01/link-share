@@ -12,5 +12,5 @@ export type IUser = {
     lastName: string
     email?: string
     avatar?: string
-    links: ILink[]
+    links?: ILink[]
 }

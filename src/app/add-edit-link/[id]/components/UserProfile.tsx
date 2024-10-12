@@ -50,7 +50,11 @@ export default function UserProfile() {
 					}
 				)).data
 				
-				setUserData(response)
+				setUserData({
+					...(userData || {}),
+					...values,
+					_id: response._id as string
+				})
 				setAlert(
 					`Profile ${userData?._id ? 'updated' : 'created'} successfully`,
 					'success'
@@ -146,7 +150,9 @@ export default function UserProfile() {
 								style={
 									{
 										maxHeight: '200px',
-										maxWidth: '200px'
+										maxWidth: '200px',
+										minHeight: '200px',
+										minWidth: '200px'
 									}
 								}
 							/>

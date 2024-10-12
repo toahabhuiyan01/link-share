@@ -85,9 +85,11 @@ export function LinksRender({ userData, fromPreview }: LinksRenderProps) {
 							style={{
 								borderRadius: '50%',
 								minHeight: '80px',
-								minWidth: '80px'
+								minWidth: '80px',
+								maxHeight: '80px',
+								maxWidth: '80px'
 							}}
-							className='border-2 border-indigo-700 object-cover'
+							className='border-2 border-indigo-700 image-subject object-cover'
 						/>
 					</AspectRatio>
 				</div>
@@ -124,7 +126,7 @@ export function LinksRender({ userData, fromPreview }: LinksRenderProps) {
 				}
 			>
 				{
-					userData?.links.map((link) => {
+					userData?.links?.map((link) => {
 						const linkColorTheme = platformTheme[link.name as PlatformType]
 
 						return (
@@ -170,7 +172,7 @@ export function LinksRender({ userData, fromPreview }: LinksRenderProps) {
 					})
 				}
 				{
-					!userData?.links.length && (
+					!userData?.links?.length && (
 						[1, 2, 3].map((_, index) => (
 							<p
 								className='h-10 w-full bg-gray-200 rounded-lg'
