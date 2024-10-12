@@ -100,7 +100,7 @@ export default function UserProfile() {
 			}
 		>
 			<div
-				className='flex flex-col gap-8 p-8'
+				className='flex flex-col gap-8 p-8 overflow-scroll'
 				style={
 					{
 						height: 'calc(100% - 6.25rem)'
