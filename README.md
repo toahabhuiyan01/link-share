@@ -24,6 +24,7 @@ Here I used the hosted backend API for REST operations
 - NextJS (TypeScript)
 - TailwindCSS, Shadcn/ui
 - Zustand ( State Management )
+- Formik for form action handling and validation
 - Lucid Icon for Icons
 - MongoDB (mongoose)
 
