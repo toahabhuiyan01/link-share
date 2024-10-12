@@ -244,6 +244,7 @@ function EditLink({ handleChange, index, link, onBlur, onRemoveLink, errors, tou
 					<GripHorizontal
 						{...attributes}
 						{...listeners}
+					 className='text-gray-500'
 						style={{ cursor: 'grab', width: '1.25rem' }}
 					/>
 					<p className='text-gray-500 text-base font-semibold'>
