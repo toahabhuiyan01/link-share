@@ -1,7 +1,7 @@
 'use client'
 
-import { closestCorners, DndContext, DragEndEvent, KeyboardSensor, MouseSensor, PointerSensor, PointerSensorOptions, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { closestCorners, DndContext, DragEndEvent, MouseSensor, PointerSensor, PointerSensorOptions, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useFormik } from 'formik'
 import { GripHorizontal } from 'lucide-react'
