@@ -7,8 +7,10 @@ import TopBar from './components/TopBar'
 import UserProfile from './components/UserProfile'
 
 import useLinkStore from '@/app/_store/LinkStore'
-import { NextResponse } from 'next/server'
+import useAlertStore from '@/app/_store/AlertStore'
 import Loading from '@/app/loading'
+import axios from 'axios'
+import { REST_API_URL } from '@/app/_utils/constants'
 
 type PageProps = {
 	params: {
@@ -16,7 +18,8 @@ type PageProps = {
 	}
 }
 export default function Page({ params: { id } }: PageProps) {
-	const { selectedView, setSelectedView, fetchAndSetUserData, loading } = useLinkStore()
+	const { selectedView, setSelectedView, setUserData, loading, setLoading } = useLinkStore()
+	const { setAlert } = useAlertStore()
 
 	useEffect(
 		() => {
@@ -32,12 +35,18 @@ export default function Page({ params: { id } }: PageProps) {
 	)
 
 	async function getUserData() {
+		setLoading(true)
 		try {
-			await fetchAndSetUserData(id)
+			const data = (await axios(`${REST_API_URL}/api/user`, { params: { id } })).data
+			setUserData({ ...data})
 		} catch(error) {
 			console.log(error)
-			NextResponse.redirect(new URL('/add-edit-link/new', ))
+			
+			setSelectedView('Profile Details')
+			setAlert('Profile not found, create a new profile', 'error')
+
 		}
+		setLoading(false)
 	}
 
 	return (
