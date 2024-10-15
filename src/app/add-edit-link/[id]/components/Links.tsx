@@ -16,10 +16,11 @@ import useAlertStore from '@/app/_store/AlertStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import { Loader } from '@/app/loading'
+import { deepCompare } from '@/app/_utils/deep-compare'
 
 const SOCILE_MEDIA = Object.keys(platformTheme)
 const DEFAULT_LINK = { id: getRandomString(), name: '', url: '' }
@@ -74,6 +75,12 @@ function Link() {
 		})
 	})
 
+	const formLinks = linkForm.values.links
+	const isSame = useMemo(
+		() => deepCompare(formLinks, userData?.links),
+		[userData?.links, formLinks]
+	)
+
 	useEffect(
 		() => {
 			linkForm.setValues({ links: userData?.links || [] })
@@ -82,7 +89,6 @@ function Link() {
 		[userData]
 	)
 
-	const formLinks = linkForm.values.links
 
 	return (
 		<div
@@ -200,7 +206,7 @@ function Link() {
 				<hr />
 				<div className='flex justify-end px-8'>
 					<Button
-						disabled={!linkForm.isValid || linkForm.isSubmitting}
+						disabled={!linkForm.isValid || linkForm.isSubmitting || isSame}
 						className={`${isMobile ? 'w-full' : 'w-24'} h-10 mt-4 bg-indigo-600 text-white font-semibold`}
 						onClick={linkForm.submitForm}
 					>

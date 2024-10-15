@@ -15,9 +15,10 @@ import useLinkStore from '@/app/_store/LinkStore'
 import useAlertStore from '@/app/_store/AlertStore'
 import useDimensionHook from '../../../_hooks/useDimension'
 import axios from 'axios'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { REST_API_URL } from '@/app/_utils/constants'
 import { Loader } from '@/app/loading'
+import { deepCompare } from '@/app/_utils/deep-compare'
 
 type UserData = Pick<IUser, 'email' | 'avatar' | 'firstName' | 'lastName'>
 type KeysUserData = keyof UserData
@@ -71,6 +72,16 @@ export default function UserProfile() {
 		})
 	})
 
+	const userValues = formData.values
+
+	const isSame = useMemo(
+		() => {
+			const { firstName, lastName, avatar, email } = userData || {}
+			return deepCompare(userValues, { firstName, lastName, avatar, email })
+		},
+		[userData, userValues]
+	)
+
 	useEffect(
 		() => {
 			if (userData) {
@@ -91,8 +102,6 @@ export default function UserProfile() {
 		},
 		[userData]
 	)
-
-	const userValues = formData.values
 
 	return (
 		<div
@@ -284,7 +293,7 @@ export default function UserProfile() {
 				<div className='flex justify-end px-8'>
 					<Button
 						className={`${isMobile ? 'w-full' : 'w-24'} h-10 mt-4 bg-indigo-600 text-white font-semibold`}
-						disabled={!formData.isValid || formData.isSubmitting}
+						disabled={!formData.isValid || formData.isSubmitting || isSame}
 						onClick={formData.submitForm}
 					>
 						{ formData.isSubmitting ? <Loader /> : 'Save'}
