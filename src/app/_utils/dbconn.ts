@@ -29,6 +29,32 @@ export const userSchema = new Schema<IUser>({
 
 export const UserModel = Moongose.models.User || Moongose.model('User', userSchema)
 
+// models/Player.js
+import mongoose from 'mongoose';
+
+const playerSchema = new mongoose.Schema({
+  id: { type: Number, required: true, unique: true },
+  name: { type: String, required: true },
+  firstname: String,
+  lastname: String,
+  age: Number,
+  birth: {
+    date: String,
+    place: String,
+    country: String,
+  },
+  nationality: String,
+  height: String,
+  weight: String,
+  number: Number,
+  position: String,
+  photo: String,
+  club: String,
+  marketValue: Number,
+});
+
+export const Player = mongoose.models.Player || mongoose.model('Player', playerSchema);
+
 async function dbConnect() {
 	if(Moongose.connection.readyState >= 1) {
 		return
@@ -39,7 +65,7 @@ async function dbConnect() {
 	const dbUrl = `mongodb+srv://${username}:${password}@cluster0.yptboqt.mongodb.net/`
 
 	try {
-		const conn = await Moongose.connect(dbUrl)
+		const conn = await Moongose.connect(dbUrl, { dbName: 'link-share' })
 		console.log(`MongoDB connected: ${conn.connection.host}`)
 	} catch(error) {
 		console.error(error)

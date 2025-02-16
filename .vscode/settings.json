@@ -1,27 +1,32 @@
 {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-    },
-    "editor.formatOnSave": true,
-    "[javascript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-    },
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-    },
+    "diffEditor.ignoreTrimWhitespace": false,
     "editor.formatOnPaste": true,
-    "editor.formatOnType": true,
-    "eslint.format.enable": true,
-    "eslint.lintTask.enable": true,
-    "files.eol": "\n",
-    "editor.indentSize": "tabSize",
+    "editor.formatOnSave": true, // This should enable format on save
+    "editor.formatOnType": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode", // Add this line
+    "editor.inlineSuggest.enabled": true,
     "editor.tabSize": 4,
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "prettier.tabWidth": 4,
+    "editor.fontVariations": false,
+    "editor.renderWhitespace": "selection",
+    "files.insertFinalNewline": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true,
+        "**/dist": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/dist": true
+    },
+    "html.autoClosingTags": true,
+    "javascript.format.enable": true,
+    "typescript.format.enable": true,
+    "json.format.enable": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "eslint.enable": true
 }
